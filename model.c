@@ -48,7 +48,11 @@ void ProcessNode(struct aiNode *Node, const struct aiScene *Scene)
         printf("Aasdas!\n");
         Mesh;
 
-        Here!;
+        ContinueWorkHere;
+        // - Study how Assimp Scene really works
+        // - Continue working on ProcessNode
+        // - Create CreateModel Function and try to store as much of the model loading as we can there.
+
         // 1 - CreateModel Functions
         //     - Call LoadModel from CreateFunction
         //     - Initialize the Meshes Array!

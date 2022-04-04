@@ -1,5 +1,6 @@
 /*
   ============================================================================
+
   - Reference Video: https://www.youtube.com/watch?v=esC1HnyD9Bk&list=PLplnkTzzqsZS3R5DjmCQsqupu43oS9CFN&index=8
 
       - Be able to compute the following matrices on the CPU

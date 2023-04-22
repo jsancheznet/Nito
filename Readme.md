@@ -1,10 +1,6 @@
-# Nito (in progress)
+# Nito
 
-Nito is a collection of common shading algorithms.
-
-The idea is to draw the same 3d model several times, with different
-shading equations so you can easily see and appreciate their
-differences.
+Nito is a 3D model viewer
 
 # License
 

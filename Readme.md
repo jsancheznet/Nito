@@ -1,6 +1,6 @@
 # Nito
 
-Nito is a 3D model viewer
+3D Model viewer 
 
 # License
 

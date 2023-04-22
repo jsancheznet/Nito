@@ -51,10 +51,11 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "vendor/stb_image.h"
 
-// Assimp
-#include <assimp/cimport.h>        // Plain-C interface
-#include <assimp/scene.h>          // Output data structure
-#include <assimp/postprocess.h>    // Post processing flags
+// These 2 pragma warnings are needed because tinyobj uses strcpy instead of s_strcpy
+#pragma warning(disable:4996)
+#pragma warning(disable:4706)
+#define TINYOBJ_LOADER_C_IMPLEMENTATION
+#include "tinyobj_loader_c.h"
 
 #include "jsanchez_shared.h"
 #include "jsanchez_math.h"
@@ -65,6 +66,7 @@
 #include "camera.c"
 #include "clock.c"
 #include "renderer.c"
+
 #include "mesh.c"
 #include "model.c"
 
@@ -265,6 +267,7 @@ void SwapGLBuffers(window Window)
     SDL_GL_SwapWindow(Window.Handle);
 }
 
+#if 0
 void DrawMesh(mesh Mesh) // TODO: Should we specify shader as input? DrawMesh(Mesh, BlinnPhongShader) ?
 {
     // by passing the shader to the mesh we can set several uniforms
@@ -292,6 +295,7 @@ void DrawMesh(mesh Mesh) // TODO: Should we specify shader as input? DrawMesh(Me
     glDrawElements(GL_TRIANGLES, ArrayCount(Mesh.Indices), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
+#endif
 
 int main(int Argc, char **Argv)
 {
@@ -319,58 +323,20 @@ int main(int Argc, char **Argv)
 
 
 
+    { // Testing grounds
+        char *Filename = "models\teapot\teapot.obj";
 
+        tinyobj_attrib_t Attrib;
+        tinyobj_shape_t* Shapes = NULL;
+        size_t ShapeCount;
+        tinyobj_material_t* Materials = NULL;
+        size_t MaterialCount;
 
-
-
-
-
-#if 1
-    //
-    // Load Stuff
-    //
-
-    f32 Vertices[] =
-    {
-        // positions          // normals           // texture coords
-        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
-    };
-
-    u32 Indices[] =
-    {
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
-    };
-
-
-    texture MyTexture = CreateTexture("images/awesomeface.png", TextureType_Diffuse);
-    texture *TextureArray = NULL;
-    ArrayInit(TextureArray);
-    ArrayPush(TextureArray, MyTexture);
-    mesh NewMesh = CreateMesh((vertex*)Vertices, ARRAY_SIZE(Vertices),
-                              Indices, ARRAY_SIZE(Indices),
-                              TextureArray, ArrayCount(TextureArray),
-                              CreateShader("shaders/test.glsl"));
-
-    texture TestingTexture = CreateTexture("images/wall.jpg", TextureType_Diffuse);
-    texture *WallMeshTextureArray = NULL;
-    ArrayInit(WallMeshTextureArray);
-    ArrayPush(WallMeshTextureArray, TestingTexture);
-    mesh WallMesh = CreateMesh((vertex*)Vertices, ARRAY_SIZE(Vertices),
-                               Indices, ARRAY_SIZE(Indices),
-                               WallMeshTextureArray, ArrayCount(WallMeshTextureArray),
-                               CreateShader("shaders/test.glsl"));
-#endif
-
-
-
-
-
-    model Teapot = {0};
-    Teapot = LoadModel("models/teapot/teapot.obj");
+        {
+            u32 Flags = TINYOBJ_FLAG_TRIANGULATE;
+            i32 Ret = tinyobj_parse_obj(&Attrib, &Shapes, &ShapeCount, &Materials, &MaterialCount, Filename, get_file_data, NULL, Flags);
+        }
+    }
 
 
     b32 Running = 1;
@@ -419,8 +385,8 @@ int main(int Argc, char **Argv)
 
             ClearScreen(SmoothPurple);
 
-            DrawMesh(NewMesh);
-            DrawMesh(WallMesh);
+            // DrawMesh(NewMesh);
+            // DrawMesh(WallMesh);
 
             SwapGLBuffers(Window);
         }

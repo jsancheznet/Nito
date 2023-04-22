@@ -1,10 +1,5 @@
 #pragma once
 
-// Assimp
-#include <assimp/cimport.h>        // Plain-C interface
-#include <assimp/scene.h>          // Output data structure
-#include <assimp/postprocess.h>    // Post processing flags
-
 #include "jsanchez_shared.h"
 #include "jsanchez_math.h"
 #include "jsanchez_dynamic_array.h"
@@ -38,6 +33,7 @@ char *PathFromFilename(char *Filename)
     return Result;
 }
 
+#if 0
 void ProcessNode(struct aiNode *Node, const struct aiScene *Scene)
 {
     // process all the node's meshes (if any)
@@ -67,7 +63,9 @@ void ProcessNode(struct aiNode *Node, const struct aiScene *Scene)
         ProcessNode(Node->mChildren[i], Scene);
     }
 }
+#endif
 
+#if 0
 model LoadModel(char *Filename)
 {
     model Result = {0};
@@ -95,7 +93,8 @@ model LoadModel(char *Filename)
 
     return Result;
 }
-
+#endif
+#if 0
 void DrawModel(model Model)
 {
     // for(unsigned int i = 0; i < meshes.size(); i++)
@@ -104,3 +103,4 @@ void DrawModel(model Model)
     // NOTE: Loop over all the meshes and call draw on each mesh
     Model;
 }
+#endif
